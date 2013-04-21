@@ -24,10 +24,11 @@ def zip_with(func, *iterables):
 
 
 def cache(func, cache_size):
-    def func_cached(x, d=OrderedDict()):
-        if x not in d.keys():
+    d = OrderedDict()
+    def func_cached(*args):
+        if args not in d:
             if len(d) >= cache_size:
                 d.popitem(False)
-            d[x] = func(x)
-        return d[x]
-    return lambda x: func_cached(x)
+            d[args] = func(*args)
+        return d[args]
+    return lambda *args: func_cached(*args)
