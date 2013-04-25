@@ -34,7 +34,7 @@ class Person(object):
 
     def children(self, gender="both"):
         if gender == "both":
-            return self.successors
+            return list(self.successors)
         else:
             return list(filter(lambda child: child.gender == gender,
                                list(self.successors)))
