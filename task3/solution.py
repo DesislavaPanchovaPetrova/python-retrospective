@@ -8,12 +8,12 @@ class Person(object):
         self.gender = gender
         self.father = father
         self.mother = mother
-        if mother is not None:
-            self.__siblings_observers.append(mother.children)
-            mother.successors.append(self)
-        if father is not None:
-            self.__siblings_observers.append(father.children)
-            father.successors.append(self)
+        if self.mother:
+            self.__siblings_observers.append(self.mother.children)
+            self.mother.successors.append(self)
+        if self.father:
+            self.__siblings_observers.append(self.father.children)
+            self.father.successors.append(self)
 
     def get_brothers(self):
         return self.__get_my_siblings("M")
