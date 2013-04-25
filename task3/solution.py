@@ -1,22 +1,19 @@
 class Person(object):
 
-    def __init__(self, name, birth_year, gender, **keywords):
+    def __init__(self, name, birth_year, gender, father=None, mother=None):
         self._siblings_observers = []
         self.successors = set()
         self.name = name
         self.birth_year = birth_year
         self.gender = gender
-        self.father = None
-        self.mother = None
-        for kw in keywords.keys():
-            if kw == 'mother':
-                self.mother = keywords[kw]
-                self._siblings_observers.append(keywords[kw].children)
-                keywords[kw].successors.add(self)
-            elif kw == 'father':
-                self.father = keywords[kw]
-                self._siblings_observers.append(keywords[kw].children)
-                keywords[kw].successors.add(self)
+        self.father = father
+        self.mother = mother
+        if mother is not None:
+            self._siblings_observers.append(mother.children)
+            mother.successors.add(self)
+        if father is not None:
+            self._siblings_observers.append(father.children)
+            father.successors.add(self)
 
     def get_brothers(self):
         brothers = set()
