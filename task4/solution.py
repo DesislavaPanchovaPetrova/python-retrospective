@@ -1,4 +1,3 @@
-from functools import reduce
 
 
 class InvalidMove(Exception):
@@ -21,6 +20,7 @@ class TicTacToeBoard(object):
     ROWS = "321"
     COLS = "ABC"
     VALUES = ['O', 'X']
+    KEYS = ["A1", "A2", "A3", "B1", "B2", "B3", "C1", "C2", "C3"]
     GAME_IN_PROGRESS = 'Game in progress.'
     DRAW = 'Draw!'
     X_WINS = 'X wins!'
@@ -28,11 +28,12 @@ class TicTacToeBoard(object):
     WIN_LINES = [["A3", "B3", "C3"], ["A2", "B2", "C2"], ["A1", "B1", "C1"],
                  ["A3", "A2", "A1"], ["B3", "B2", "B1"], ["C3", "C2", "C1"],
                  ["A3", "B2", "C1"], ["A1", "B2", "C3"]]
+    WIN_LINE = [True, True, True]
 
     def __init__(self):
         self.board = dict()
         self.turn = None
-        self.status = "Game in progress."
+        self.status = self.GAME_IN_PROGRESS
 
     def __str__(self):
         board_str = ""
@@ -49,13 +50,13 @@ class TicTacToeBoard(object):
         if value not in self.VALUES:
             raise InvalidValue("Use 'X' or 'O' for value.")
 
-        if key not in ["A1", "A2", "A3", "B1", "B2", "B3", "C1", "C2", "C3"]:
+        if key not in self.KEYS:
             raise InvalidKey("Wrong position!")
 
         if key in self.board:
             raise InvalidMove("This position is taken!")
 
-        if self.turn is not None and self.turn == value:
+        if self.turn and self.turn == value:
             raise NotYourTurn("Not your turn!")
         else:
             self.turn = value
@@ -74,7 +75,6 @@ class TicTacToeBoard(object):
         return self.status
 
     def wins(self, board, sign):
-        values = [[board.get(l) == sign for l in line] for line in self.WIN_LINES]
-        wins = [reduce(lambda x, y: x and y, value) for value in values]
-        winer = reduce(lambda x, y: x or y, wins)
-        return winer
+        board_lines = [[board.get(key) == sign for key in line] for line in self.WIN_LINES]
+        victories = ["Wins!" for line in board_lines if line == self.WIN_LINE]
+        return any(victories)
