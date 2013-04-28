@@ -9,7 +9,7 @@ def groupby(func, seq):
 
 
 def iterate(func):
-    iterated_function = lambda *arg: arg
+    iterated_function = lambda arg: arg
     while True:
         yield iterated_function
         iterated_function = functools.partial(\
@@ -17,6 +17,8 @@ def iterate(func):
 
 
 def zip_with(func, *iterables):
+    if not any(iterables):
+        return
     iterators = list(map(iter, iterables))
     return [func(*tuple([next(iterator) for iterator in iterators]))
             for i in range(min(map(len, list(iterables))))]
