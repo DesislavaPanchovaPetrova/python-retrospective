@@ -20,8 +20,9 @@ def zip_with(func, *iterables):
     if not any(iterables):
         return
     iterators = list(map(iter, iterables))
-    return [func(*tuple([next(iterator) for iterator in iterators]))
-            for i in range(min(map(len, list(iterables))))]
+    while True:
+        args = [next(iterator) for iterator in iterators]
+        yield func(*args)
 
 
 def cache(func, cache_size):
