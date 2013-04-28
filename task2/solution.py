@@ -1,20 +1,19 @@
-from collections import defaultdict
-from collections import OrderedDict
-import functools
-import itertools
+from collections import defaultdict, OrderedDict
+import functools, itertools
 
 
 def groupby(func, seq):
-    res = defaultdict(list)
-    [res[func(x)].append(x) for x in seq]
-    return res
+    grouped = defaultdict(list)
+    [grouped[func(item)].append(item) for item in seq]
+    return grouped
 
 
 def iterate(func):
-    key = lambda x: x
+    iterated_function = lambda *arg: arg
     while True:
-        yield key
-        key = functools.partial(lambda f, *args: func(f(*args)), key)
+        yield iterated_function
+        iterated_function = functools.partial(\
+            lambda f, *args: func(f(*args)), iterated_function)
 
 
 def zip_with(func, *iterables):
