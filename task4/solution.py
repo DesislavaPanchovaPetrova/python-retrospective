@@ -20,7 +20,7 @@ class TicTacToeBoard(object):
     ROWS = "321"
     COLS = "ABC"
     VALUES = ['O', 'X']
-    KEYS = ["A1", "A2", "A3", "B1", "B2", "B3", "C1", "C2", "C3"]
+    KEYS = ["A3", "B3", "C3", "A2", "B2", "C2", "A1", "B1", "C1"]
     GAME_IN_PROGRESS = 'Game in progress.'
     DRAW = 'Draw!'
     X_WINS = 'X wins!'
@@ -36,15 +36,16 @@ class TicTacToeBoard(object):
         self.status = self.GAME_IN_PROGRESS
 
     def __str__(self):
-        board_str = ""
-        for row in self.ROWS:
-            board_str += "\n  -------------\n"
-            board_str += str(row)+" |"
-            for col in self.COLS:
-                key = col+str(row)
-                board_str += " "+self.board.get(key, " ")+" |"
-        board_str += "\n  -------------\n    A   B   C  \n"
-        return board_str
+        return ('\n' +
+                '  -------------\n' +
+                '3 | {} | {} | {} |\n' +
+                '  -------------\n' +
+                '2 | {} | {} | {} |\n' +
+                '  -------------\n' +
+                '1 | {} | {} | {} |\n' +
+                '  -------------\n' +
+                '    A   B   C  \n').format(*[self.board.get(key, " ")
+                                              for key in self.KEYS])
 
     def __setitem__(self, key, value):
         if value not in self.VALUES:
