@@ -69,7 +69,7 @@ class TicTacToeBoard(object):
                 self.status = self.DRAW
             if self.wins(self.board, 'X'):
                 self.status = self.X_WINS
-            if self.wins(self.board, 'O'):
+            elif self.wins(self.board, 'O'):
                 self.status = self.O_WINS
 
     def game_status(self):
