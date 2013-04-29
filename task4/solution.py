@@ -64,16 +64,19 @@ class TicTacToeBoard(object):
 
         self.board[key] = value
 
-        if self.status == self.GAME_IN_PROGRESS and 4 < len(self.board):
-            if 9 == len(self.board):
-                self.status = self.DRAW
-            if self.wins(self.board, 'X'):
-                self.status = self.X_WINS
-            elif self.wins(self.board, 'O'):
-                self.status = self.O_WINS
+        self.update_status(self.board)
 
     def game_status(self):
         return self.status
+
+    def update_status(self, board):
+        if self.status == self.GAME_IN_PROGRESS and 4 < len(board):
+            if len(self.KEYS) == len(board):
+                self.status = self.DRAW
+            if self.wins(board, 'X'):
+                self.status = self.X_WINS
+            elif self.wins(board, 'O'):
+                self.status = self.O_WINS
 
     def wins(self, board, sign):
         board_lines = [[board.get(key) == sign for key in line] for line in self.WIN_LINES]
